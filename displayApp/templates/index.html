@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  <!-- Link to the CSS file using Django's static template tag -->
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+      <h2>Arkivo</h2>
+      <nav>
+        <ul>
+            <li class="{% if request.path == '/home/' %}active{% endif %}">
+                <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="{% if request.path == '/myproject/' %}active{% endif %}">
+                <a href="{% url 'myproject' %}">My Project</a>
+            </li>
+            <li class="{% if request.path == '/profile/' %}active{% endif %}">
+                <a href="{% url 'profile' %}">Profile</a>
+            </li>
+        </ul>
+      </nav>
+    </aside>
+    
+    <!-- Main Content Section -->
+    <main class="main-content">
+      {% block content %}
+        <!-- Messages loop -->
+        {% if messages %}
+        <div class="messages-container">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Content specific to each page will be injected here -->
+        {% block page_content %}
+        {% endblock %}
+      <!-- Default content can go here -->
+      {% endblock %}
+    </main>
+  </div>
+
+ 
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2025 Arkivo. All rights reserved.</p>
+    </div>
+  </footer>
+{% block script %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+{% block title %} Project Status {% endblock %}
+{% block content %}
+{% block page_content %}
+<div class="project-page">
+<header>
+  <h1 style="color: #011640;">Project Details</h1>
+  
+  {% if not project %}
+    <button type="button" onclick="location.href='{% url 'submit_project' %}';" class="btn-primary">
+      Upload Project
+    </button>
+  {% else %}
+    <a href="{% url 'edit_project' project.project_id %}" class="btn-primary">
+      Edit Project
+    </a>
+  {% endif %}
+</header> 
+<div class="project-detail-container">
+{% if project %}
+  <p><strong>Title:</strong> {{ project.title }}</p>
+  <p><strong>Description:</strong> {{ project.description }}</p>
+  <p><strong>Project Category:</strong> {{ project.project_category }}</p>
+  <p><strong>Repo Link:</strong> <a href="{{ project.repo_link }}" target="_blank">{{ project.repo_link }}</a></p>
+  <p><strong>Status:</strong> {{ project.status }}</p>
+  <p><strong>Grade:</strong> {{ project.grade }}</p>
+  <p><strong>Supervisor Feedback:</strong> {{ project.feedback }}</p>
+  <p><strong>Plagiarism Score:</strong> {{ project.plagiarism_score }}%</p>
+  <p><strong>Last Updated:</strong> {{ project.updated_at|date:"d M, Y" }}</p>
+{% else %}
+  <p>You haven’t submitted a project yet. Please do so by clicking Upload Project button at the top right corner.</p>
+{% endif %}
+</div>
+{% endblock %}
+
+<!-- Floating Chat Button -->
+<button id="chat-toggle" class="chat-toggle">Chat</button>
+
+  <!-- C<div id="chat-panel" class="chat-panel">hat Section for Each Project -->
+<div id="chat-panel" class="chat-panel">  
+  <div class="chat-header">
+    <span>Project Chat</span>
+    <button id="chat-close" class="chat-close">&times;</button>
+  </div>
+  <div class="chat-messages" id="chat-messages-{{ project.project_id }}">
+    {% for comment in comments %}
+      {% if comment.project_id == project %}
+        <div class="chat-message {% if comment.user_id == request.user %}me{% else %}other{% endif %}">
+          <strong>{{ comment.user_id.username }}</strong>: {{ comment.comment }}<br>
+          <small>{{ comment.created_at|date:"d M, H:i" }}</small>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p style="text-align:center; color: gray;">No comments yet.</p>
+    {% endfor %}
+  </div>
+  {% if project %}
+    <form method="post" action="{% url 'add_comment' project.project_id %}" class="chat-form">
+      {% csrf_token %}
+      <textarea name="comment" required placeholder="Type your message..."></textarea>
+      <button type="submit">Send</button>
+    </form>
+  {% else %}
+    <p style="color: gray;">No project available to comment on.</p>
+  {% endif %}
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const chatBtn = document.getElementById("chat-toggle");
+  const chatPanel = document.getElementById("chat-panel");
+  const closeBtn = document.getElementById("chat-close");
+
+  chatBtn.onclick = () => {
+    chatPanel.style.display = "flex";
+  }
+
+  closeBtn.onclick = () => {
+    chatPanel.style.display = "none";
+  }
+
+</script>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Projects List{% endblock %}
+{% block page_content %}
+<div class="project-page">
+  <header class="project-header">
+    <h1>Projects List</h1>
+    <input type="text" id="search-input" placeholder="Search Projects..." onkeyup="filterProjects(this.value)" class="project-search">
+  </header>
+
+  <div class="project-layout">
+    <!-- Project Cards -->
+    <div class="project-list">
+      {% for project in projects %}
+        <div class="project-card" 
+        data-status="{{ project.grade_status|default:'No Grades Given' }}"
+        data-dept="{{ project.student_id.department }}"
+        data-cat="{{ project.project_category }}"
+        data-year="{{ project.created_at|date:'Y' }}"
+        >
+          <div class="project-title">{{ project.title }}</div>
+          <div class="project-meta">
+            {% if project.grade_status %}
+            <span class="meta-item status">
+              <img src="{% static 'images/status.png' %}" class="icon" alt="Status icon"> 
+              {{ project.grade_status }}
+            </span>
+            {% else %}
+            <span class="meta-item status">
+              <img src="{% static 'images/status.png' %}" class="icon" alt="Status icon"> 
+              No Grades Given
+            </span>
+            {% endif %}
+            <span class="meta-item dept">
+              <img src="{% static 'images/dept-logo.png' %}" class="icon" alt="Dept icon"> 
+              Dept. {{ project.student_id.department }}
+            </span>
+            <span class="meta-item cat">
+              <img src="{% static 'images/category.png' %}" class="icon" alt="Category icon">  
+              Category {{ project.project_category }}
+            </span>
+            <span class="meta-item date">
+              <img src="{% static 'images/date.png' %}" class="icon" alt="Date icon">  
+              {{ project.created_at }}
+            </span>
+          </div>
+          <button onclick="location.href='{% url 'project_detail' project.project_id %}'">›</button>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Filters -->
+    <aside class="project-filter">
+      <h3>Filter</h3>
+    
+      <!-- Status -->
+      <div class="filter-group">
+        <label for="status-filter">Project Status</label>
+        <select id="status-filter" onchange="applyFilters()">
+          <option value="All">All</option>
+          {% for val,label in status_choices %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    
+      <!-- Department -->
+      <div class="filter-group">
+        <label for="dept-filter">Department</label>
+        <select id="dept-filter" onchange="applyFilters()">
+          <option value="All">All</option>
+          {% for val,label in dept_choices %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    
+      <!-- Category -->
+      <div class="filter-group">
+        <label for="cat-filter">Category</label>
+        <select id="cat-filter" onchange="applyFilters()">
+          <option value="All">All</option>
+          {% for val,label in category_choices %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    
+      <!-- Year -->
+      <div class="filter-group">
+        <label for="year-filter">Year</label>
+        <select id="year-filter" onchange="applyFilters()">
+          <option value="All">All</option>
+          {% for y in years %}
+            <option value="{{ y }}">{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const cards       = Array.from(document.querySelectorAll('.project-card'));
+  const filters     = {
+    search: document.getElementById('search-input'),
+    status: document.getElementById('status-filter'),
+    dept:   document.getElementById('dept-filter'),
+    cat:    document.getElementById('cat-filter'),
+    year:   document.getElementById('year-filter'),
+  };
+
+  function applyFilters() {
+    const q      = filters.search.value.trim().toLowerCase();
+    const status = filters.status.value;
+    const dept   = filters.dept.value;
+    const cat    = filters.cat.value;
+    const year   = filters.year.value;
+
+    cards.forEach(card => {
+      const title    = card.querySelector('.project-title').textContent.toLowerCase();
+      const okSearch = !q     || title.includes(q);
+      const okStatus = status === 'All' || card.dataset.status === status;
+      const okDept   = dept   === 'All' || card.dataset.dept   === dept;
+      const okCat    = cat    === 'All' || card.dataset.cat    === cat;
+      const okYear   = year   === 'All' || card.dataset.year   === year;
+
+      card.style.display = (okSearch && okStatus && okDept && okCat && okYear)
+                          ? 'flex' : 'none';
+    });
+  }
+
+  // wire up
+  Object.values(filters).forEach(el => el.addEventListener('input', applyFilters));
+  window.applyFilters = applyFilters;
+});
+</script>
+  
+
+{% endblock %}

@@ -1,0 +1,65 @@
+<!-- templates/displayApp/submit_project.html -->
+
+{% extends 'index.html' %}
+{% block title %}Submit project{% endblock %}
+
+{% block page_content %}
+<div class="main-content">
+    <header>
+        <h1 style="color: #011640;">Submit Your Project</h1>
+    </header>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div>
+            <label for="title">Project Title</label>
+            {{ form.title }}
+        </div><br>
+
+        <div>
+            <label for="description">Project Description</label>
+            {{ form.description }}
+        </div><br>
+
+        <div>
+            <label for="srs_file">SRS Document (DOCX only)</label>
+            {{ form.srs_file }}
+        </div><br>
+
+        <div>
+            <label for="sdd_file">SDD Document (DOCX only)</label>
+            {{ form.sdd_file }}
+        </div><br>
+
+        <div>
+            <label for="ui_ux_file">UI/UX Document (PDF/DOCX)</label>
+            {{ form.ui_ux_file }}
+        </div><br>
+
+        <div>
+            <label for="repo_link">Repository Link</label>
+            {{ form.repo_link }}
+        </div><br>
+
+        <div>
+            <label for="project_category">Project Category</label>
+            {{ form.project_category }}
+        </div><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if similarity_score is not None %}           //refers to the variabe in view, not in model
+        <br>
+        <div style="padding: 10px; background-color: #f0f0f0;">
+            <strong>Plagiarism Score:</strong> {{ similarity_score }}%
+            {% if similarity_score < 20 %}
+                <p style="color: green;">Submission successful!</p>
+            {% else %}
+                <p style="color: red;">High similarity detected. Please revise and resubmit.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

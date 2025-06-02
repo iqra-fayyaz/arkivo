@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+  <style>
+    .errorlist {
+        color: red;  /* Makes validation errors appear in red */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign Up</h1>
+    <form method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+     
+      <label for="id_username">Username</label>
+      {{ form.username }}
+
+      <label for="id_email">Email</label>
+      {{ form.email }}
+
+      <label for="id_password">Password</label>
+      {{ form.password }}
+
+      <div>
+        <label for="id_role">Select Role</label>
+        {{ form.role }}
+      </div>
+
+      <div id="roll_wrapper" style="display:none;">
+        <label for="id_roll">Roll Number</label>
+        {{ form.roll_number }}
+        {{ form.roll_number.errors }}
+      </div>
+
+      <div id="semester_wrapper" style="display:none;">
+        <label for="id_semester">Semester</label>
+        {{ form.semester }}
+        {{ form.semester.errors }}
+      </div>
+
+      <div id="department_wrapper" style="display:none;">
+        <label for="id_department">Department</label>
+        {{ form.department }}
+        {{ form.department.errors }}
+      </div>
+      
+      <button type="submit" class="container form button">Sign Up</button>
+    </form>
+    <p class="signin-text">
+      Already have an account? <a href="{% url 'signin' %}">Sign In</a>
+    </p>
+  </div>
+
+  <script>
+    const roleSelect       = document.getElementById("id_role");
+    const semWrapper       = document.getElementById("semester_wrapper");
+    const deptWrapper      = document.getElementById("department_wrapper");
+    const rollWrapper      = document.getElementById("roll_wrapper");
+  
+    function toggleExtras() {
+      const role = roleSelect.value;
+      if (role === "Student") {
+        semWrapper.style.display  = "block";
+        deptWrapper.style.display = "block";
+        rollWrapper.style.display = "block";
+      }
+      else if (role === "Supervisor") {
+        semWrapper.style.display  = "none";
+        deptWrapper.style.display = "block";
+        rollWrapper.style.display = "none";
+      }
+      else {
+        semWrapper.style.display  = "none";
+        deptWrapper.style.display = "none";
+        rollWrapper.style.display = "none";
+      }
+    }
+  
+    // run on load
+    window.addEventListener("DOMContentLoaded", toggleExtras);
+    // run whenever role changes
+    roleSelect.addEventListener("change", toggleExtras);
+  </script>
+  
+</body>
+</html>

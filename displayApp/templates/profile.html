@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+{% block content %}
+{% block page_content %}
+
+<div class="profile-wrapper">
+
+  <!-- Header -->
+  <div class="profile-header">
+    <h1>My Profile</h1>
+    <a href="{% url 'edit_profile' %}" class="btn-primary">Edit Profile</a>
+  </div>
+
+  <!-- Main Profile Card -->
+  <div class="profile-card">
+    <div class="profile-photo">
+      {% if user.profile_picture %}
+        <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+      {% else %}
+        <img src="{% static 'images/Avatars1.png' %}" alt="Default Avatar">
+      {% endif %}
+    </div>
+    <div class="profile-info">
+      <p><strong>Name:</strong> {{ user.get_full_name|default:user.username }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Role:</strong> {{ user.role }}</p>
+      <p><strong>Department:</strong> {{ user.get_department_display }}</p>
+      <p><strong>Semester:</strong> {{ user.semester }}</p>
+      <p><strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+      <p><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y, g:i a" }}</p>
+    </div>
+  </div>
+
+
+  <!-- Activity Summary -->
+  <div class="activity-summary">
+    <h3>Activity Summary</h3>
+    <ul>
+      <li><strong>Projects Submitted:</strong> {{ submissions_count }}</li>
+      <li><strong>My Comments:</strong> {{ comments_count }}</li>
+    </ul>
+  </div>
+
+  <!-- Logout -->
+  <div class="logout-container">
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn-secondary">Logout</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
+{% endblock %}

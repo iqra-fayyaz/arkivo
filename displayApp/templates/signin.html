@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+  <style>
+    .errorlist {
+        color: red;  /* Makes validation errors appear in red */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign In</h1>
+    <form method="post" action="{% url 'signin' %}">
+      {% csrf_token %}
+      {{ form.as_p }}  <!-- This will render all fields properly -->
+      <button type="submit" class="container form button">Sign In</button>
+    </form>
+    <p class="signin-text">
+      Do not have an account? <a href="{% url 'signup' %}">Sign Up</a>
+    </p>
+  </div>
+</body>
+</html>

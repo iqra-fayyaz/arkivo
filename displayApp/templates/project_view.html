@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Project Details{% endblock %}
+
+{% block content %}
+<div class="project-detail-container">
+
+  <h1>{{ project.title }}</h1>
+
+  <div class="project-info-box">
+    <p><strong>Category:</strong> {{ project.get_project_category_display }}</p>
+    <p><strong>Description:</strong> {{ project.description }}</p>
+    <p><strong>Repo Link:</strong> <a href="{{ project.repo_link }}" target="_blank">{{ project.repo_link }}</a></p>
+    <p><strong>Plagiarism Score:</strong> {{ project.plagiarism_score }}%</p>
+    <p><strong>Status:</strong> {{ project.get_grade_status_display }}</p>
+    <p><strong>Submitted on:</strong> {{ project.created_at|date:"F j, Y" }}</p>
+  </div>
+
+  <h2>Developer</h2>
+  <div class="developer-box">
+    {% if project.student_id.profile_picture %}
+      <img src="{{ project.student_id.profile_picture.url }}" class="profile-pic" alt="Profile Picture">
+    {% else %}
+      <img src="{% static 'images/Avatars1.png' %}" class="profile-pic" alt="Default Avatar">
+    {% endif %}
+    <div class="developer-details">
+      <p><strong>Name:</strong> {{ project.student_id.get_full_name|default:project.student_id.username }}</p>
+      <p><strong>Email:</strong> {{ project.student_id.email }}</p>
+      <p><strong>Department:</strong> {{ project.student_id.get_department_display }}</p>
+      <p><strong>Semester:</strong> {{ project.student_id.semester }}</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

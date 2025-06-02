@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block page_content %}
+<style>
+.edit-profile-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.form-group {
+  margin-bottom: 15px;
+}
+</style>
+
+<section class='edit-profile-container'>
+  <h2 style='color: #011640;'>Edit Profile</h2>
+  <form method='post' enctype="multipart/form-data">
+    {% csrf_token %} 
+    <div class='form-group'>
+      {{ form.first_name.label_tag }} {{ form.first_name }}
+    </div>
+    <div class='form-group'>
+      {{ form.last_name.label_tag }} {{ form.last_name }}
+    </div>
+    <div class='form-group'>
+      {{ form.email.label_tag }} {{ form.email }}
+    </div>
+    <div class='form-group'>
+      {{ form.roll_number.label_tag }} {{ form.roll_number }}
+    </div>
+    <div class='form-group'>
+      {{ form.department.label_tag }} {{ form.department }}
+    </div>
+    <div class='form-group'>
+      {{ form.semester.label_tag }} {{ form.semester }}
+    </div>
+    <button type='submit' class='btn btn-primary'>Save Changes</button>
+  </form>
+</section>
+{% endblock %}

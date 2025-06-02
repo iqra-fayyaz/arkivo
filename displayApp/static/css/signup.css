@@ -1,0 +1,75 @@
+/* Global Styles */
+body {
+    background-color: #011640;
+    font: Eras ITC ();
+    font-weight: 17;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container Styles */
+  .container {
+    background-color: #fff;
+    width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Styles */
+  .container h1 {
+    color: #011640;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+  /* Form Field Styles */
+  .container form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 16px;
+  }
+  
+  /* Button Styles */
+  .container form button {
+    width: 50%;
+    padding: 10px;
+    background-color: #011640;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    display: block;   /* Makes it a block element */
+    margin-bottom: 50px;
+    margin-top: 50px;
+  }
+  
+  .container form button:hover {
+    background-color: darkblue;
+  }
+  
+  /* Sign In Text Styles */
+  .signin-text {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .signin-text a {
+    color: #011640;
+    text-decoration: none;
+  }
+  
+  .signin-text a:hover {
+    text-decoration: underline;
+  }
+  
